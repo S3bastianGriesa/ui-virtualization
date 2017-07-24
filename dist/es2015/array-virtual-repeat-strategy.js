@@ -22,7 +22,7 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
     let itemsLength = items.length;
     let viewsLength = repeat.viewCount();
 
-    while (viewsLength > itemsLength) {
+    while (viewsLength > 0) {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
@@ -46,7 +46,7 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
     }
 
     let minLength = Math.min(repeat._viewsLength, items.length);
-    for (let i = viewsLength; i < minLength; i++) {
+    for (let i = 0; i < minLength; i++) {
       let overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }

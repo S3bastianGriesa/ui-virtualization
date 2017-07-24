@@ -44,7 +44,7 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
     var itemsLength = items.length;
     var viewsLength = repeat.viewCount();
 
-    while (viewsLength > itemsLength) {
+    while (viewsLength > 0) {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
@@ -68,7 +68,7 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
     }
 
     var minLength = Math.min(repeat._viewsLength, items.length);
-    for (var _i = viewsLength; _i < minLength; _i++) {
+    for (var _i = 0; _i < minLength; _i++) {
       var overrideContext = (0, _aureliaTemplatingResources.createFullOverrideContext)(repeat, items[_i], _i, itemsLength);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
@@ -96,22 +96,20 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
 
     var maybePromise = this._runSplices(repeat, array.slice(0), splices);
     if (maybePromise instanceof Promise) {
-      (function () {
-        var queuedSplices = repeat.__queuedSplices = [];
+      var queuedSplices = repeat.__queuedSplices = [];
 
-        var runQueuedSplices = function runQueuedSplices() {
-          if (!queuedSplices.length) {
-            delete repeat.__queuedSplices;
-            delete repeat.__array;
-            return;
-          }
+      var runQueuedSplices = function runQueuedSplices() {
+        if (!queuedSplices.length) {
+          delete repeat.__queuedSplices;
+          delete repeat.__array;
+          return;
+        }
 
-          var nextPromise = _this2._runSplices(repeat, repeat.__array, queuedSplices) || Promise.resolve();
-          nextPromise.then(runQueuedSplices);
-        };
+        var nextPromise = _this2._runSplices(repeat, repeat.__array, queuedSplices) || Promise.resolve();
+        nextPromise.then(runQueuedSplices);
+      };
 
-        maybePromise.then(runQueuedSplices);
-      })();
+      maybePromise.then(runQueuedSplices);
     }
   };
 

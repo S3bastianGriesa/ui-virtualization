@@ -134,7 +134,7 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
         That "first" is calculated and passed into here
     */
     // remove unneeded views.
-    while (viewsLength > itemsLength) {
+    while (viewsLength > 0) {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
@@ -159,7 +159,7 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
     }
     // add new views
     let minLength = Math.min(repeat._viewsLength, items.length);
-    for (let i = viewsLength; i < minLength; i++) {
+    for (let i = 0; i < minLength; i++) {
       let overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
