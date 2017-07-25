@@ -138,25 +138,7 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
-    // avoid repeated evaluating the property-getter for the "local" property.
-    let local = repeat.local;
-    // re-evaluate bindings on existing views.
-    for (let i = 0; i < viewsLength; i++) {
-      let view = repeat.view(i);
-      let last = i === itemsLength - 1;
-      let middle = i !== 0 && !last;
-      // any changes to the binding context?
-      if (view.bindingContext[local] === items[i + first] && view.overrideContext.$middle === middle && view.overrideContext.$last === last) {
-        // no changes. continue...
-        continue;
-      }
-      // update the binding context and refresh the bindings.
-      view.bindingContext[local] = items[i + first];
-      view.overrideContext.$middle = middle;
-      view.overrideContext.$last = last;
-      view.overrideContext.$index = i + first;
-      repeat.updateBindings(view);
-    }
+
     // add new views
     let minLength = Math.min(repeat._viewsLength, items.length);
     for (let i = 0; i < minLength; i++) {

@@ -27,24 +27,6 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
       repeat.removeView(viewsLength, true);
     }
 
-    let local = repeat.local;
-
-    for (let i = 0; i < viewsLength; i++) {
-      let view = repeat.view(i);
-      let last = i === itemsLength - 1;
-      let middle = i !== 0 && !last;
-
-      if (view.bindingContext[local] === items[i + first] && view.overrideContext.$middle === middle && view.overrideContext.$last === last) {
-        continue;
-      }
-
-      view.bindingContext[local] = items[i + first];
-      view.overrideContext.$middle = middle;
-      view.overrideContext.$last = last;
-      view.overrideContext.$index = i + first;
-      repeat.updateBindings(view);
-    }
-
     let minLength = Math.min(repeat._viewsLength, items.length);
     for (let i = 0; i < minLength; i++) {
       let overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);

@@ -202,27 +202,9 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
       repeat.removeView(viewsLength, true);
     }
 
-    var local = repeat.local;
-
-    for (var i = 0; i < viewsLength; i++) {
-      var _view = repeat.view(i);
-      var last = i === itemsLength - 1;
-      var middle = i !== 0 && !last;
-
-      if (_view.bindingContext[local] === items[i + first] && _view.overrideContext.$middle === middle && _view.overrideContext.$last === last) {
-        continue;
-      }
-
-      _view.bindingContext[local] = items[i + first];
-      _view.overrideContext.$middle = middle;
-      _view.overrideContext.$last = last;
-      _view.overrideContext.$index = i + first;
-      repeat.updateBindings(_view);
-    }
-
     var minLength = Math.min(repeat._viewsLength, items.length);
-    for (var _i = 0; _i < minLength; _i++) {
-      var overrideContext = (0, _aureliaTemplatingResources.createFullOverrideContext)(repeat, items[_i], _i, itemsLength);
+    for (var i = 0; i < minLength; i++) {
+      var overrideContext = (0, _aureliaTemplatingResources.createFullOverrideContext)(repeat, items[i], i, itemsLength);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
   };
@@ -282,8 +264,8 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
     }
 
     if (allSplicesAreInplace) {
-      for (var _i2 = 0; _i2 < splices.length; _i2++) {
-        var _splice = splices[_i2];
+      for (var _i = 0; _i < splices.length; _i++) {
+        var _splice = splices[_i];
         for (var collectionIndex = _splice.index; collectionIndex < _splice.index + _splice.addedCount; collectionIndex++) {
           if (!this._isIndexBeforeViewSlot(repeat, repeat.viewSlot, collectionIndex) && !this._isIndexAfterViewSlot(repeat, repeat.viewSlot, collectionIndex)) {
             var viewIndex = this._getViewIndex(repeat, repeat.viewSlot, collectionIndex);
@@ -294,8 +276,8 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
         }
       }
     } else {
-      for (var _i3 = 0, ii = splices.length; _i3 < ii; ++_i3) {
-        var _splice2 = splices[_i3];
+      for (var _i2 = 0, ii = splices.length; _i2 < ii; ++_i2) {
+        var _splice2 = splices[_i2];
         var removed = _splice2.removed;
         var removedLength = removed.length;
         for (var j = 0, jj = removedLength; j < jj; ++j) {
@@ -1008,13 +990,13 @@ var VirtualRepeat = exports.VirtualRepeat = (_dec4 = (0, _aureliaTemplating.cust
     var i = 0;
     var viewToMoveLimit = length - childrenLength * 2;
     while (i < length && !isAtFirstOrLastIndex()) {
-      var _view2 = this.view(viewIndex);
+      var _view = this.view(viewIndex);
       var nextIndex = getNextIndex(index, i);
       this.isLastIndex = nextIndex >= items.length - 1;
       this._isAtTop = nextIndex <= 0;
       if (!(isAtFirstOrLastIndex() && childrenLength >= items.length)) {
         if (i > viewToMoveLimit) {
-          rebindAndMoveView(this, _view2, nextIndex, this._scrollingDown);
+          rebindAndMoveView(this, _view, nextIndex, this._scrollingDown);
         }
         i++;
       }

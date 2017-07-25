@@ -41,27 +41,9 @@ export var ArrayVirtualRepeatStrategy = function (_ArrayRepeatStrategy) {
       repeat.removeView(viewsLength, true);
     }
 
-    var local = repeat.local;
-
-    for (var i = 0; i < viewsLength; i++) {
-      var view = repeat.view(i);
-      var last = i === itemsLength - 1;
-      var middle = i !== 0 && !last;
-
-      if (view.bindingContext[local] === items[i + first] && view.overrideContext.$middle === middle && view.overrideContext.$last === last) {
-        continue;
-      }
-
-      view.bindingContext[local] = items[i + first];
-      view.overrideContext.$middle = middle;
-      view.overrideContext.$last = last;
-      view.overrideContext.$index = i + first;
-      repeat.updateBindings(view);
-    }
-
     var minLength = Math.min(repeat._viewsLength, items.length);
-    for (var _i = 0; _i < minLength; _i++) {
-      var overrideContext = createFullOverrideContext(repeat, items[_i], _i, itemsLength);
+    for (var i = 0; i < minLength; i++) {
+      var overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
   };
@@ -121,8 +103,8 @@ export var ArrayVirtualRepeatStrategy = function (_ArrayRepeatStrategy) {
     }
 
     if (allSplicesAreInplace) {
-      for (var _i2 = 0; _i2 < splices.length; _i2++) {
-        var _splice = splices[_i2];
+      for (var _i = 0; _i < splices.length; _i++) {
+        var _splice = splices[_i];
         for (var collectionIndex = _splice.index; collectionIndex < _splice.index + _splice.addedCount; collectionIndex++) {
           if (!this._isIndexBeforeViewSlot(repeat, repeat.viewSlot, collectionIndex) && !this._isIndexAfterViewSlot(repeat, repeat.viewSlot, collectionIndex)) {
             var viewIndex = this._getViewIndex(repeat, repeat.viewSlot, collectionIndex);
@@ -133,8 +115,8 @@ export var ArrayVirtualRepeatStrategy = function (_ArrayRepeatStrategy) {
         }
       }
     } else {
-      for (var _i3 = 0, ii = splices.length; _i3 < ii; ++_i3) {
-        var _splice2 = splices[_i3];
+      for (var _i2 = 0, ii = splices.length; _i2 < ii; ++_i2) {
+        var _splice2 = splices[_i2];
         var removed = _splice2.removed;
         var removedLength = removed.length;
         for (var j = 0, jj = removedLength; j < jj; ++j) {
